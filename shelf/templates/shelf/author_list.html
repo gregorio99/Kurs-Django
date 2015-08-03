@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block 'content' %}
+{% block content %}
 Moja teść - lista autorów.</br>
 <ul>
     {% for author in object_list %}
-    <li><a href={% url 'shelf:author-detail' author.id %}>{{forloop.counter}} {{ author.last_name }} {{author.first_name}} </li>
+    <li><a href={% url 'shelf:author-detail' author.id %}>{{forloop.counter}} {{ author.last_name }} {{author.first_name}}</li>
     {% endfor %}
 </ul>
 {% endblock %}

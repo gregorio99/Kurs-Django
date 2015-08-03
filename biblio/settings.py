@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -26,7 +26,7 @@ SECRET_KEY = '@w8#1o*ujl)f09x+=08a3$&(d#x6+&*rq2bgxzq60qke_ft^ho'
 DEBUG = True
 
 # Jakie adresy internetowe maja dostep do aplikacji
-ALLOWED_HOSTS = []  # ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']  # ['127.0.0.1']
 
 # Application definition
 
@@ -37,7 +37,21 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # allauth
+    'bootstrap3',  # bootstrap3
     'shelf',
+
+    ###################################
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',  # allauth
+
+    ###################################
+    # 'shelf',
+    'contact',
+    'rental',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,17 +74,26 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                # to bylo od poczatku
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # to wklejone domyslna wartosc z dokumentacji
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+
+                # wymagane dla allauth
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'biblio.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -81,7 +104,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -96,8 +118,31 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'users.BiblioUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOCALE_PATHS = (
+    '/home/grzesiek/django/biblio/locale',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    # allauth
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1  # becouse of 'django.contrib.sites' allauth
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# allauth
+LOGIN_REDIRECT_URL = 'main-page'  # '/'
+
+# walka z media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

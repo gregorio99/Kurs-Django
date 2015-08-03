@@ -16,8 +16,16 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+# from shelf.views import MainPageView
+from contact.views import MessageAddView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^shelf/', include('shelf.urls', namespace='shelf')),
+    # url(r'^contact/$', MessageAddView.as_view()),
+    url(r'^accounts/', include('allauth.urls')),
+
+    # url(r'^$', MainPageView.as_view(), name='main-page'),
+    url(r'^$', 'shelf.views.index_view', name='main-page'),
 ]

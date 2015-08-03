@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html>
+    {% load staticfiles %}
+    {% load bootstrap3 %}  
     <head>
         <meta charset="utf-8" />
-        <title></title>
+        <title>{% block title %}tytuł strony{% endblock %}</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
     </head>
     <body>
-        <!-- I tu wewnątz body powinna się znaleźć treść każdej naszej strony --> 
-        {% block 'content' %}
+        <!-- treść każdej naszej strony -->
+
+    <div>
+    MENU GŁÓNE: {% if user.is_authenticated %}
+                    <a class="btn btn-default" href="{% url "account_logout"%}">Wyloguj się</a> 
+                {% else %} 
+                    <a class="btn btn-default" href="{% url "account_login" %}">Zaloguj się </a>
+                {% endif %}
+                
+                <a class="btn btn-default" href="{% url "account_signup" %}">Załóż konto</a> 
+    </div>
+    Co ja paczam: <img src="{% static "kotek.jpg"%}" alt="koteł" > 
+        {% block content %}
         {% endblock %}
     </body>
 </html>
